@@ -1,0 +1,190 @@
+===============================================================
+1. Basic SELECT Query
+===============================================================
+Query 1: Retrieve the names of 10 famous books.
+---------------------------------------------------------------
+SELECT ?book ?bookLabel
+WHERE {
+  ?book wdt:P31 wd:Q571.  # Instances of books
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+
+---------------------------------------------------------------
+Query 2: List 10 countries and their capitals.
+---------------------------------------------------------------
+SELECT ?country ?capital ?capitalLabel
+WHERE {
+  ?country wdt:P31 wd:Q6256.  # Instance of a country
+  ?country wdt:P36 ?capital.  # Has capital
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+
+===============================================================
+2. SELECT with FILTER
+===============================================================
+Query: List 10 universities established after 1900.
+---------------------------------------------------------------
+SELECT ?university ?universityLabel ?established
+WHERE {
+  ?university wdt:P31 wd:Q3918;  # Instance of university
+              wdt:P571 ?established.  # Inception date
+  FILTER(YEAR(?established) > 1900)
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+
+===============================================================
+3. SELECT DISTINCT
+===============================================================
+Query 1: Retrieve distinct countries where Shakespeare's plays are performed.
+---------------------------------------------------------------
+SELECT DISTINCT ?country ?countryLabel
+WHERE {
+  ?play wdt:P50 wd:Q692.  # William Shakespeare
+  ?play wdt:P840 ?country.  # Narrative location
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+
+---------------------------------------------------------------
+Query 2: Retrieve distinct continents with at least one volcano.
+---------------------------------------------------------------
+SELECT DISTINCT ?continent ?continentLabel
+WHERE {
+  ?volcano wdt:P31 wd:Q8072;  # Instance of volcano
+           wdt:P30 ?continent.  # Located on continent
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+
+===============================================================
+4. SELECT with ORDER BY
+===============================================================
+Query 1: List the 10 oldest universities.
+---------------------------------------------------------------
+SELECT ?university ?universityLabel ?established
+WHERE {
+  ?university wdt:P31 wd:Q3918;  # Instance of university
+              wdt:P571 ?established.  # Inception date
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+ORDER BY ASC(?established)
+LIMIT 10
+
+---------------------------------------------------------------
+Query 2: List the 10 most populous countries.
+---------------------------------------------------------------
+SELECT ?country ?countryLabel ?population
+WHERE {
+  ?country wdt:P31 wd:Q6256;  # Instance of country
+           wdt:P1082 ?population.  # Population
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+ORDER BY DESC(?population)
+LIMIT 10
+
+===============================================================
+5. SELECT with LIMIT
+===============================================================
+Query 1: List 5 rivers.
+---------------------------------------------------------------
+SELECT ?river ?riverLabel
+WHERE {
+  ?river wdt:P31 wd:Q4022.  # Instance of river
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 5
+---------------------------------------------------------------
+Query 2: List 5 solar system bodies.
+---------------------------------------------------------------
+SELECT ?body ?bodyLabel
+WHERE {
+  ?body wdt:P31 wd:Q523.  # Instance of celestial body
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 5
+
+===============================================================
+6. SELECT with OFFSET
+===============================================================
+Query 1: Retrieve 10 books after skipping the first 10.
+---------------------------------------------------------------
+SELECT ?book ?bookLabel
+WHERE {
+  ?book wdt:P31 wd:Q571.  # Instance of book
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+OFFSET 10
+
+---------------------------------------------------------------
+Query 2: List 10 countries skipping the first 5.
+---------------------------------------------------------------
+SELECT ?country ?countryLabel
+WHERE {
+  ?country wdt:P31 wd:Q6256.  # Instance of country
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+OFFSET 5
+
+===============================================================
+7. SELECT with GROUP BY
+===============================================================
+Query 1: Count the number of countries by continent.
+---------------------------------------------------------------
+SELECT ?continent ?continentLabel (COUNT(?country) AS ?countryCount)
+WHERE {
+  ?country wdt:P31 wd:Q6256;  # Instance of country
+           wdt:P30 ?continent.  # Located on continent
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+GROUP BY ?continent ?continentLabel
+
+===============================================================
+8. SELECT with HAVING
+===============================================================
+Query 1: List continents with more than 5 countries.
+---------------------------------------------------------------
+SELECT ?continent ?continentLabel (COUNT(?country) AS ?countryCount)
+WHERE {
+  ?country wdt:P31 wd:Q6256;  # Instance of country
+           wdt:P30 ?continent.  # Located on continent
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+GROUP BY ?continent ?continentLabel
+HAVING(COUNT(?country) > 5)
+
+===============================================================
+9. SELECT with Aggregates
+===============================================================
+Query 1: Find the total population of the world.
+---------------------------------------------------------------
+SELECT (SUM(?population) AS ?totalPopulation)
+WHERE {
+  ?country wdt:P31 wd:Q6256;  # Instance of country
+           wdt:P1082 ?population.  # Population
+}
+
+---------------------------------------------------------------
+Query 2: Find the average height of mountains.
+---------------------------------------------------------------
+SELECT (AVG(?height) AS ?averageHeight)
+WHERE {
+  ?mountain wdt:P31 wd:Q8502;  # Instance of mountain
+            wdt:P2044 ?height.  # Height above sea level
+}
+
+===============================================================
+10. SELECT with Subqueries
+===============================================================
+Query 2: List the largest river in each continent.
+---------------------------------------------------------------
+SELECT ?continent ?river ?riverLabel (MAX(?length) AS ?maxLength)
+WHERE {
+  ?river wdt:P31 wd:Q4022;  # Instance of river
+         wdt:P2043 ?length;  # Length
+         wdt:P30 ?continent.  # Located on continent
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+GROUP BY ?continent ?river ?riverLabel
