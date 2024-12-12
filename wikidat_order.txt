@@ -1,13 +1,13 @@
 
-1. Basic SELECT Query
-2. SELECT with LIMIT
-3. SELECT with OFFSET
-4. SELECT DISTINCT
-5. SELECT with FILTER
-6. SELECT with ORDER BY
-7. SELECT with GROUP BY
-8. SELECT with HAVING
-9. SELECT with Aggregates
+01. Basic SELECT Query
+02. SELECT with LIMIT
+03. SELECT with OFFSET
+04. SELECT DISTINCT
+05. SELECT with FILTER
+06. SELECT with ORDER BY
+07. SELECT with GROUP BY
+08. SELECT with HAVING
+09. SELECT with Aggregates
 10. SELECT with Subqueries
 
 ===============================================================
@@ -34,21 +34,52 @@ WHERE {
 LIMIT 10
 
 ===============================================================
-2. SELECT with FILTER
+2. SELECT with LIMIT
 ===============================================================
-Query: List 10 universities established after 1900.
+Query 1: List 5 rivers.
 ---------------------------------------------------------------
-SELECT ?university ?universityLabel ?established
+SELECT ?river ?riverLabel
 WHERE {
-  ?university wdt:P31 wd:Q3918;  # Instance of university
-              wdt:P571 ?established.  # Inception date
-  FILTER(YEAR(?established) > 1900)
+  ?river wdt:P31 wd:Q4022.  # Instance of river
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 5
+---------------------------------------------------------------
+Query 2: List 5 solar system bodies.
+---------------------------------------------------------------
+SELECT ?body ?bodyLabel
+WHERE {
+  ?body wdt:P31 wd:Q523.  # Instance of celestial body
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 5
+
+===============================================================
+3. SELECT with OFFSET
+===============================================================
+Query 1: Retrieve 10 books after skipping the first 10.
+---------------------------------------------------------------
+SELECT ?book ?bookLabel
+WHERE {
+  ?book wdt:P31 wd:Q571.  # Instance of book
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
 LIMIT 10
+OFFSET 10
+
+---------------------------------------------------------------
+Query 2: List 10 countries skipping the first 5.
+---------------------------------------------------------------
+SELECT ?country ?countryLabel
+WHERE {
+  ?country wdt:P31 wd:Q6256.  # Instance of country
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+OFFSET 5
 
 ===============================================================
-3. SELECT DISTINCT
+4. SELECT DISTINCT
 ===============================================================
 Query 1: Retrieve distinct countries where Shakespeare's plays are performed.
 ---------------------------------------------------------------
@@ -70,7 +101,21 @@ WHERE {
 }
 
 ===============================================================
-4. SELECT with ORDER BY
+5. SELECT with FILTER
+===============================================================
+Query: List 10 universities established after 1900.
+---------------------------------------------------------------
+SELECT ?university ?universityLabel ?established
+WHERE {
+  ?university wdt:P31 wd:Q3918;  # Instance of university
+              wdt:P571 ?established.  # Inception date
+  FILTER(YEAR(?established) > 1900)
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
+
+===============================================================
+6. SELECT with ORDER BY
 ===============================================================
 Query 1: List the 10 oldest universities.
 ---------------------------------------------------------------
@@ -94,51 +139,6 @@ WHERE {
 }
 ORDER BY DESC(?population)
 LIMIT 10
-
-===============================================================
-5. SELECT with LIMIT
-===============================================================
-Query 1: List 5 rivers.
----------------------------------------------------------------
-SELECT ?river ?riverLabel
-WHERE {
-  ?river wdt:P31 wd:Q4022.  # Instance of river
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-LIMIT 5
----------------------------------------------------------------
-Query 2: List 5 solar system bodies.
----------------------------------------------------------------
-SELECT ?body ?bodyLabel
-WHERE {
-  ?body wdt:P31 wd:Q523.  # Instance of celestial body
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-LIMIT 5
-
-===============================================================
-6. SELECT with OFFSET
-===============================================================
-Query 1: Retrieve 10 books after skipping the first 10.
----------------------------------------------------------------
-SELECT ?book ?bookLabel
-WHERE {
-  ?book wdt:P31 wd:Q571.  # Instance of book
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-LIMIT 10
-OFFSET 10
-
----------------------------------------------------------------
-Query 2: List 10 countries skipping the first 5.
----------------------------------------------------------------
-SELECT ?country ?countryLabel
-WHERE {
-  ?country wdt:P31 wd:Q6256.  # Instance of country
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-LIMIT 10
-OFFSET 5
 
 ===============================================================
 7. SELECT with GROUP BY
