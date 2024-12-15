@@ -1,41 +1,135 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX edu: <http://example.org/education#>
 
+# 01. Basic SELECT Query
+# 02. SELECT with LIMIT
+# 03. SELECT with FILTER
+# 04. SELECT with Subqueries
 
-SELECT ?student ?name WHERE {
-  ?student rdf:type edu:Student .
-  ?student edu:hasName ?name .
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+# PREFIX owl: <http://www.w3.org/2002/07/owl#>
+# PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+# PREFIX edu: <http://example.org/education#>
+
+# ===============================================================
+# 1. Basic SELECT Query
+# ===============================================================
+
+# ---------------------------------------------------------------
+# Query 1: List all students and their enrolled courses.
+# ---------------------------------------------------------------
+SELECT ?student ?course
+WHERE {
+    ?student rdf:type edu:Student .
+    ?student edu:enrolledIn ?course .
 }
 
-SELECT ?individual ?type WHERE {
-  ?individual rdf:type ?type .
+# ---------------------------------------------------------------
+# Query 2: Find instructors teaching specific courses.
+# ---------------------------------------------------------------
+
+SELECT ?instructor ?course
+WHERE {
+    ?instructor rdf:type edu:Instructor .
+    ?instructor edu:teaches ?course .
 }
 
-SELECT ?student ?name ?course WHERE {
-  ?student rdf:type edu:Student .
-  ?student edu:hasName ?name .
-  ?student edu:enrolledIn ?course .
+# ---------------------------------------------------------------
+# Query 3: List all courses along with their departments and classrooms.
+# ---------------------------------------------------------------
+
+SELECT ?course ?department ?classroom
+WHERE {
+    ?course rdf:type edu:Course .
+    ?course edu:belongsToDepartment ?department .
+    ?course edu:usesClassroom ?classroom .
 }
 
-SELECT ?instructor ?name ?course WHERE {
-  ?instructor rdf:type edu:Instructor .
-  ?instructor edu:hasName ?name .
-  ?instructor edu:teaches ?course .
+# ===============================================================
+# 02. SELECT with LIMIT
+# ===============================================================
+
+# ---------------------------------------------------------------
+# Query 1: List the first student.
+# ---------------------------------------------------------------
+
+SELECT ?student
+WHERE {
+    ?student rdf:type edu:Student .
+}
+LIMIT 1
+
+# ---------------------------------------------------------------
+# Query 2: Get the first classroom and its capacity.
+# ---------------------------------------------------------------
+SELECT ?classroom ?capacity
+WHERE {
+    ?classroom rdf:type edu:Classroom .
+    ?classroom edu:hasCapacity ?capacity .
+}
+LIMIT 1
+
+# ===============================================================
+# 03. SELECT with FILTER
+# ===============================================================
+
+# ---------------------------------------------------------------
+# Query 1: Find students assigned a grade above 90.
+# ---------------------------------------------------------------
+
+SELECT ?student ?score
+WHERE {
+    ?student rdf:type edu:Student .
+    ?student edu:assignedGrade ?grade .
+    ?grade edu:hasScore ?score .
 }
 
-SELECT ?classroom ?capacity WHERE {
-  ?classroom rdf:type edu:Classroom .
-  ?classroom edu:hasCapacity ?capacity .
+SELECT ?student ?score
+WHERE {
+    ?student rdf:type edu:Student .
+    ?student edu:assignedGrade ?grade .
+    ?grade edu:hasScore ?score .
+    FILTER (?score > "90")
 }
 
+# ---------------------------------------------------------------
+# Query 2: Find classrooms with a capacity greater than 40:
+# ---------------------------------------------------------------
 
-SELECT ?course ?classroom WHERE {
-  ?course edu:usesClassroom ?classroom .
+SELECT ?classroom ?capacity
+WHERE {
+    ?classroom rdf:type edu:Classroom .
+    ?classroom edu:hasCapacity ?capacity .
 }
 
-SELECT ?course ?department WHERE {
-  ?course edu:belongsToDepartment ?department .
+SELECT ?classroom ?capacity
+WHERE {
+    ?classroom rdf:type edu:Classroom .
+    ?classroom edu:hasCapacity ?capacity .
+    FILTER (?capacity > "40")
+}
+
+# ===============================================================
+# 04. SELECT with Subqueries
+# ===============================================================
+
+# ---------------------------------------------------------------
+# Query: Students with the highest score in each grade.
+# This query uses a subquery to find the highest score for each grade and then retrieves the students with those scores.
+# ---------------------------------------------------------------
+SELECT ?student ?grade ?score
+WHERE {
+    ?student rdf:type edu:Student .
+    ?student edu:assignedGrade ?grade .
+    ?grade edu:hasScore ?score .
+
+    # Subquery to find the maximum score for each grade.
+    {
+        SELECT ?grade (MAX(?score) AS ?maxScore)
+        WHERE {
+            ?grade edu:hasScore ?score .
+        }
+        GROUP BY ?grade
+    }
+
+    FILTER (?score = ?maxScore)
 }

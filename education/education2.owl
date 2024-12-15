@@ -8,7 +8,7 @@
 
     <!-- Ontology Metadata -->
     <owl:Ontology rdf:about="http://example.org/education">
-        <rdfs:comment>An ontology for managing courses, students, instructors, departments, classrooms, and grades in an educational system.</rdfs:comment>
+        <rdfs:comment>An ontology for managing courses, students, instructors, departments, and classrooms in an educational system.</rdfs:comment>
     </owl:Ontology>
 
     <!-- Classes -->
@@ -22,8 +22,6 @@
     <owl:Class rdf:about="edu:Course"/>
     <owl:Class rdf:about="edu:Department"/>
     <owl:Class rdf:about="edu:Classroom"/>
-    <owl:Class rdf:about="edu:Grade"/>
-    <owl:Class rdf:about="edu:Assignment"/>
 
     <!-- Properties -->
     <owl:ObjectProperty rdf:about="edu:teaches">
@@ -46,21 +44,6 @@
         <rdfs:range rdf:resource="edu:Classroom"/>
     </owl:ObjectProperty>
 
-    <owl:ObjectProperty rdf:about="edu:assignedGrade">
-        <rdfs:domain rdf:resource="edu:Student"/>
-        <rdfs:range rdf:resource="edu:Grade"/>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="edu:submitsAssignment">
-        <rdfs:domain rdf:resource="edu:Student"/>
-        <rdfs:range rdf:resource="edu:Assignment"/>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="edu:hasAssignment">
-        <rdfs:domain rdf:resource="edu:Course"/>
-        <rdfs:range rdf:resource="edu:Assignment"/>
-    </owl:ObjectProperty>
-
     <owl:DatatypeProperty rdf:about="edu:hasName">
         <rdfs:domain rdf:resource="edu:Person"/>
         <rdfs:range rdf:resource="xsd:string"/>
@@ -71,22 +54,15 @@
         <rdfs:range rdf:resource="xsd:integer"/>
     </owl:DatatypeProperty>
 
-    <owl:DatatypeProperty rdf:about="edu:hasScore">
-        <rdfs:domain rdf:resource="edu:Grade"/>
-        <rdfs:range rdf:resource="xsd:float"/>
-    </owl:DatatypeProperty>
-
     <!-- Individuals -->
     <edu:Student rdf:about="edu:Student1">
         <edu:hasName>John Doe</edu:hasName>
         <edu:enrolledIn rdf:resource="edu:Course1"/>
-        <edu:assignedGrade rdf:resource="edu:Grade1"/>
     </edu:Student>
 
     <edu:Student rdf:about="edu:Student2">
         <edu:hasName>Jane Smith</edu:hasName>
         <edu:enrolledIn rdf:resource="edu:Course2"/>
-        <edu:assignedGrade rdf:resource="edu:Grade2"/>
     </edu:Student>
 
     <edu:Instructor rdf:about="edu:Instructor1">
@@ -103,14 +79,12 @@
         <rdfs:label>Introduction to SPARQL</rdfs:label>
         <edu:belongsToDepartment rdf:resource="edu:Department1"/>
         <edu:usesClassroom rdf:resource="edu:Classroom1"/>
-        <edu:hasAssignment rdf:resource="edu:Assignment1"/>
     </edu:Course>
 
     <edu:Course rdf:about="edu:Course2">
         <rdfs:label>Advanced OWL Ontologies</rdfs:label>
         <edu:belongsToDepartment rdf:resource="edu:Department2"/>
         <edu:usesClassroom rdf:resource="edu:Classroom2"/>
-        <edu:hasAssignment rdf:resource="edu:Assignment2"/>
     </edu:Course>
 
     <edu:Department rdf:about="edu:Department1">
@@ -130,21 +104,5 @@
         <rdfs:label>Room 202</rdfs:label>
         <edu:hasCapacity>50</edu:hasCapacity>
     </edu:Classroom>
-
-    <edu:Grade rdf:about="edu:Grade1">
-        <edu:hasScore>85.5</edu:hasScore>
-    </edu:Grade>
-
-    <edu:Grade rdf:about="edu:Grade2">
-        <edu:hasScore>92.0</edu:hasScore>
-    </edu:Grade>
-
-    <edu:Assignment rdf:about="edu:Assignment1">
-        <rdfs:label>Assignment 1</rdfs:label>
-    </edu:Assignment>
-
-    <edu:Assignment rdf:about="edu:Assignment2">
-        <rdfs:label>Assignment 2</rdfs:label>
-    </edu:Assignment>
 
 </rdf:RDF>
