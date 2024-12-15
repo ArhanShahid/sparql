@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:edu="http://example.org/education#">
+
+    <!-- Ontology Metadata -->
+    <owl:Ontology rdf:about="http://example.org/education">
+        <rdfs:comment>An ontology for managing courses, students, instructors, departments, and classrooms in an educational system.</rdfs:comment>
+    </owl:Ontology>
+
+    <!-- Classes -->
+    <owl:Class rdf:about="edu:Person"/>
+    <owl:Class rdf:about="edu:Student">
+        <rdfs:subClassOf rdf:resource="edu:Person"/>
+    </owl:Class>
+    <owl:Class rdf:about="edu:Instructor">
+        <rdfs:subClassOf rdf:resource="edu:Person"/>
+    </owl:Class>
+    <owl:Class rdf:about="edu:Course"/>
+    <owl:Class rdf:about="edu:Department"/>
+    <owl:Class rdf:about="edu:Classroom"/>
+
+    <!-- Properties -->
+    <owl:ObjectProperty rdf:about="edu:teaches">
+        <rdfs:domain rdf:resource="edu:Instructor"/>
+        <rdfs:range rdf:resource="edu:Course"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="edu:enrolledIn">
+        <rdfs:domain rdf:resource="edu:Student"/>
+        <rdfs:range rdf:resource="edu:Course"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="edu:belongsToDepartment">
+        <rdfs:domain rdf:resource="edu:Course"/>
+        <rdfs:range rdf:resource="edu:Department"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="edu:usesClassroom">
+        <rdfs:domain rdf:resource="edu:Course"/>
+        <rdfs:range rdf:resource="edu:Classroom"/>
+    </owl:ObjectProperty>
+
+    <owl:DatatypeProperty rdf:about="edu:hasName">
+        <rdfs:domain rdf:resource="edu:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="edu:hasCapacity">
+        <rdfs:domain rdf:resource="edu:Classroom"/>
+        <rdfs:range rdf:resource="xsd:integer"/>
+    </owl:DatatypeProperty>
+
+    <!-- Individuals -->
+    <edu:Student rdf:about="edu:Student1">
+        <edu:hasName>John Doe</edu:hasName>
+        <edu:enrolledIn rdf:resource="edu:Course1"/>
+    </edu:Student>
+
+    <edu:Student rdf:about="edu:Student2">
+        <edu:hasName>Jane Smith</edu:hasName>
+        <edu:enrolledIn rdf:resource="edu:Course2"/>
+    </edu:Student>
+
+    <edu:Instructor rdf:about="edu:Instructor1">
+        <edu:hasName>Dr. Smith</edu:hasName>
+        <edu:teaches rdf:resource="edu:Course1"/>
+    </edu:Instructor>
+
+    <edu:Instructor rdf:about="edu:Instructor2">
+        <edu:hasName>Prof. Adams</edu:hasName>
+        <edu:teaches rdf:resource="edu:Course2"/>
+    </edu:Instructor>
+
+    <edu:Course rdf:about="edu:Course1">
+        <rdfs:label>Introduction to SPARQL</rdfs:label>
+        <edu:belongsToDepartment rdf:resource="edu:Department1"/>
+        <edu:usesClassroom rdf:resource="edu:Classroom1"/>
+    </edu:Course>
+
+    <edu:Course rdf:about="edu:Course2">
+        <rdfs:label>Advanced OWL Ontologies</rdfs:label>
+        <edu:belongsToDepartment rdf:resource="edu:Department2"/>
+        <edu:usesClassroom rdf:resource="edu:Classroom2"/>
+    </edu:Course>
+
+    <edu:Department rdf:about="edu:Department1">
+        <rdfs:label>Computer Science</rdfs:label>
+    </edu:Department>
+
+    <edu:Department rdf:about="edu:Department2">
+        <rdfs:label>Information Systems</rdfs:label>
+    </edu:Department>
+
+    <edu:Classroom rdf:about="edu:Classroom1">
+        <rdfs:label>Room 101</rdfs:label>
+        <edu:hasCapacity>30</edu:hasCapacity>
+    </edu:Classroom>
+
+    <edu:Classroom rdf:about="edu:Classroom2">
+        <rdfs:label>Room 202</rdfs:label>
+        <edu:hasCapacity>50</edu:hasCapacity>
+    </edu:Classroom>
+
+</rdf:RDF>

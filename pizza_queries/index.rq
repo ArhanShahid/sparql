@@ -1,0 +1,8 @@
+
+SELECT ?property (STR(?com) AS ?comment)
+WHERE 
+{
+	?property rdf:type owl:ObjectProperty;
+	               rdfs:comment ?com.
+}
+

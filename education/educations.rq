@@ -1,0 +1,41 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX edu: <http://example.org/education#>
+
+
+SELECT ?student ?name WHERE {
+  ?student rdf:type edu:Student .
+  ?student edu:hasName ?name .
+}
+
+SELECT ?individual ?type WHERE {
+  ?individual rdf:type ?type .
+}
+
+SELECT ?student ?name ?course WHERE {
+  ?student rdf:type edu:Student .
+  ?student edu:hasName ?name .
+  ?student edu:enrolledIn ?course .
+}
+
+SELECT ?instructor ?name ?course WHERE {
+  ?instructor rdf:type edu:Instructor .
+  ?instructor edu:hasName ?name .
+  ?instructor edu:teaches ?course .
+}
+
+SELECT ?classroom ?capacity WHERE {
+  ?classroom rdf:type edu:Classroom .
+  ?classroom edu:hasCapacity ?capacity .
+}
+
+
+SELECT ?course ?classroom WHERE {
+  ?course edu:usesClassroom ?classroom .
+}
+
+SELECT ?course ?department WHERE {
+  ?course edu:belongsToDepartment ?department .
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:edu="http://example.org/education#">
+
+    <!-- Ontology Metadata -->
+    <owl:Ontology rdf:about="http://example.org/education">
+        <rdfs:comment>An ontology for managing courses, students, and instructors in an educational system.</rdfs:comment>
+    </owl:Ontology>
+
+    <!-- Classes -->
+    <owl:Class rdf:about="edu:Person"/>
+    <owl:Class rdf:about="edu:Student">
+        <rdfs:subClassOf rdf:resource="edu:Person"/>
+    </owl:Class>
+    <owl:Class rdf:about="edu:Instructor">
+        <rdfs:subClassOf rdf:resource="edu:Person"/>
+    </owl:Class>
+    <owl:Class rdf:about="edu:Course"/>
+
+    <!-- Properties -->
+    <owl:ObjectProperty rdf:about="edu:teaches">
+        <rdfs:domain rdf:resource="edu:Instructor"/>
+        <rdfs:range rdf:resource="edu:Course"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="edu:enrolledIn">
+        <rdfs:domain rdf:resource="edu:Student"/>
+        <rdfs:range rdf:resource="edu:Course"/>
+    </owl:ObjectProperty>
+
+    <owl:DatatypeProperty rdf:about="edu:hasName">
+        <rdfs:domain rdf:resource="edu:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Individuals -->
+    <edu:Student rdf:about="edu:Student1">
+        <edu:hasName>John Doe</edu:hasName>
+        <edu:enrolledIn rdf:resource="edu:Course1"/>
+    </edu:Student>
+
+    <edu:Instructor rdf:about="edu:Instructor1">
+        <edu:hasName>Dr. Smith</edu:hasName>
+        <edu:teaches rdf:resource="edu:Course1"/>
+    </edu:Instructor>
+
+    <edu:Course rdf:about="edu:Course1">
+        <rdfs:label>Introduction to SPARQL</rdfs:label>
+    </edu:Course>
+
+</rdf:RDF>
