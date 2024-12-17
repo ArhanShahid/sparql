@@ -22,7 +22,7 @@ const executeQuery = async (): Promise<void> => {
                     ?book wdt:P31 wd:Q571.  # Instances of books
                     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
                     }
-                    LIMIT 100
+                    LIMIT 10
     `;
 
     try {
