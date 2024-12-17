@@ -92,7 +92,7 @@ WHERE {
 }
 
 # ---------------------------------------------------------------
-# Query 2: Find classrooms with a capacity greater than 40:
+# Query 2: Find classrooms with a capacity greater than 40.
 # ---------------------------------------------------------------
 
 SELECT ?classroom ?capacity
