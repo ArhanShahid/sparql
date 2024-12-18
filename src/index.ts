@@ -17,12 +17,13 @@ const executeQuery = async (): Promise<void> => {
     const queryEngine = new QueryEngine();
 
     const query = `${PREFIX}
-                    SELECT ?book ?bookLabel
-                    WHERE {
-                    ?book wdt:P31 wd:Q571.  # Instances of books
+                SELECT ?country ?countryLabel
+                WHERE {
+                    ?country wdt:P31 wd:Q6256.  # Instance of country
                     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-                    }
-                    LIMIT 10
+                }
+                LIMIT 5
+                OFFSET 5
     `;
 
     try {
@@ -30,14 +31,12 @@ const executeQuery = async (): Promise<void> => {
         const bindingsStream = await queryEngine.queryBindings(query, { sources: [ENDPOINT], });
         const bindings = await bindingsStream.toArray();
 
-        bindings.forEach(binding => {
+        bindings.forEach((binding: any, index: any) => {
 
-            // console.log(binding)
+            const country = binding.get('country')?.value || 'Unknown';
+            const countryLabel = binding.get('countryLabel')?.value || 'Unknown';
 
-            const book = binding.get('book')?.value || 'Unknown';
-            const bookLabel = binding.get('bookLabel')?.value || 'Unknown';
-
-            console.log({ book, bookLabel });
+            console.log(`${index + 1}: Country: ${countryLabel} & Country Wikidata URL: ${country}`)
         });
     } catch (error) {
         console.error('Error executing query:', error);
