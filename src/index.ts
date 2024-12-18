@@ -38,6 +38,7 @@ const executeQuery = async (): Promise<void> => {
 
             console.log(`${index + 1}: Country: ${countryLabel} & Country Wikidata URL: ${country}`)
         });
+        
     } catch (error) {
         console.error('Error executing query:', error);
     }
