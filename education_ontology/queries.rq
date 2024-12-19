@@ -44,6 +44,21 @@ WHERE {
     ?course edu:usesClassroom ?classroom .
 }
 
+# ---------------------------------------------------------------
+# Query 4: List Max Data
+# ---------------------------------------------------------------
+
+SELECT ?classroom ?student ?course ?grade ?department ?instructor ?assignment
+WHERE { 
+    ?classroom rdf:type edu:Classroom.
+    ?student rdf:type edu:Student.
+    ?course rdf:type edu:Course.
+    ?grade rdf:type edu:Grade.
+    ?instructor rdf:type edu:Instructor.
+    ?department rdf:type edu:Department.
+    ?assignment rdf:type edu:Assignment.
+}
+
 # ===============================================================
 # 02. SELECT with LIMIT
 # ===============================================================
